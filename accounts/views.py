@@ -1,10 +1,13 @@
+from ast import Try
 from base64 import urlsafe_b64encode
 from email import message
 from email.policy import default
 from http.client import HTTPResponse
+import imp
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import auth
 from accounts.models import Account
+from carts.models import Cart, CartItem
 from .forms import RegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -14,6 +17,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from carts.views import _cart_id
 # Create your views here.
 
 
@@ -64,13 +68,48 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-
-        print(email)
-        print(password)
-
         user = auth.authenticate(email=email, password=password)
-        print(user)
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(
+                    cart=cart).exists()
+
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+
+                    #Getting the product variation by cart id
+                    product_variation = []
+                    for item in cart_item:
+                        variation = item.variation.all()
+                        product_variation.append(list(variation))
+                
+                    #Get the cart items to access his product variations
+                    cart_item = CartItem.objects.filter(user=user)
+                    ex_var_list = []
+                    id = []
+                    for item in cart_item:
+                        existing_variation = item.variation.all()
+                        existing_variation = list(existing_variation)
+                        ex_var_list.append(existing_variation)
+                        id.append(item.id)
+
+                    for pr in product_variation:
+                        if pr in ex_var_list:
+                            index = ex_var_list.index(pr)
+                            id_item = id[index]
+                            item = CartItem.objects.get(id=id_item)
+                            item.quantity += 1
+                            item.user = user
+                            item.save()
+                        else:
+                            cart_item = CartItem.objects.filter(cart=cart)
+                            for item in cart_item:
+                                    item.user = user
+                                    item.save()
+
+            except:
+                pass
             auth.login(request, user)
             messages.success(request, 'You are now logged in!')
             return redirect('dashboard')
@@ -141,7 +180,6 @@ def forgotPassword(request):
     else:
         form = RegistrationForm()
 
-    
     return render(request, 'accounts/forgotPassword.html')
 
 
@@ -160,24 +198,25 @@ def restPassword(request, uidb64, token):
         messages.error(request, 'Invalid activation link!')
         return redirect('login')
 
+
 def restPasswordPage(request):
     if request.method == 'POST':
-       password = request.POST['password']
-       confirm_password = request.POST['confirm_password']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
 
-       if password == confirm_password:
-          uid = request.session.get('uid')
-          user = Account.objects.get(pk = uid)
-          
-          user.set_password(password)
-          
-          user.save()
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = Account.objects.get(pk=uid)
 
-          messages.success(request, 'Password rest successful!')
-          return redirect('login')
-       else:
-           messages.error(request, 'password do not match!')
-           return redirect('restPasswordPage')
+            user.set_password(password)
+
+            user.save()
+
+            messages.success(request, 'Password rest successful!')
+            return redirect('login')
+        else:
+            messages.error(request, 'password do not match!')
+            return redirect('restPasswordPage')
 
     else:
-       return render(request, 'accounts/restPasswordPage.html')
+        return render(request, 'accounts/restPasswordPage.html')
