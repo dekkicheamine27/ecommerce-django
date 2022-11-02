@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
 
-    
+
 ]
 
 MIDDLEWARE = [
@@ -85,8 +86,14 @@ WSGI_APPLICATION = 'sofiane_ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sofiane',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'amine2793',
+        'OPTIONS': {
+         "init_command": "SET foreign_key_checks = 0;",
+    },
     }
 }
 
@@ -145,7 +152,7 @@ MEDIA_ROOT= BASE_DIR/'media'
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
-    
+
 }
 
 

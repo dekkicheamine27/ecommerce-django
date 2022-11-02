@@ -34,3 +34,4 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Password Does Not Match'
             )
+        
