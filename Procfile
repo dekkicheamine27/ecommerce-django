@@ -1,1 +1,1 @@
-web: gunicorn demo.wsgi --log-file -
+web: gunicorn dekkichos.wsgi --log-file -
