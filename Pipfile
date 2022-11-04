@@ -9,6 +9,8 @@ pillow = "*"
 mysqlclient = "*"
 django-admin-thumbnails = "*"
 python-decouple = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
