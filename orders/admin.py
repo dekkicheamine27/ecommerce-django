@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Payment, Order, OrderProduct
-
 # Register your models here.
+
 
 class OrederProductInline(admin.TabularInline):
     model = OrderProduct

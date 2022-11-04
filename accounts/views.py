@@ -18,6 +18,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from carts.views import _cart_id
+from orders.models import Order, OrderProduct
 # Create your views here.
 
 
@@ -83,7 +84,7 @@ def login(request):
                     for item in cart_item:
                         variation = item.variation.all()
                         product_variation.append(list(variation))
-                
+
                     #Get the cart items to access his product variations
                     cart_item = CartItem.objects.filter(user=user)
                     ex_var_list = []
@@ -146,7 +147,13 @@ def activate(request, uidb64, token):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    oreders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True,)
+    orders_count = oreders.count()
+    context = {
+        'orders': oreders,
+        'orders_count': orders_count
+            }
+    return render(request, 'accounts/dashboard.html', context )
 
 
 def forgotPassword(request):
@@ -220,3 +227,27 @@ def restPasswordPage(request):
 
     else:
         return render(request, 'accounts/restPasswordPage.html')
+
+def my_orders(request):
+    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True,)
+    context ={
+        'orders': orders
+    }
+    return render(request, 'accounts/my_orders.html', context)
+
+
+@login_required(login_url='login')
+def order_detail(request, order_id):
+    order_detail = OrderProduct.objects.filter(order__order_number=order_id)
+    print(order_detail)
+    order = Order.objects.get(order_number=order_id)
+    sub_total=0
+    for i in order_detail:
+        sub_total = i.product_price * i.quantity
+    context = {
+        "order_detail": order_detail,
+        "order":order,
+        "sub_total": sub_total
+        
+    }
+    return render(request,'accounts/order_detail.html', context)

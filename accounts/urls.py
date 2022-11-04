@@ -13,5 +13,7 @@ urlpatterns = [
     path('forgotPassword/', views.forgotPassword, name='forgotPassword'),
     path('restPassword/<uidb64>/<token>/', views.restPassword, name='restPassword'),
     path('restPasswordPage/', views.restPasswordPage, name='restPasswordPage'),
+    path('my_orders/', views.my_orders, name='my_orders'),
+    path('order_detail/<int:order_id>', views.order_detail, name='order_detail'),
 
 ] 
