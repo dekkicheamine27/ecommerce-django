@@ -1,1 +1,1 @@
-web: gunicorn dekkichos.wsgi --log-file -
+web: gunicorn sofiane_ecommerce.wsgi --log-file -
