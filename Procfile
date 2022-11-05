@@ -1,1 +1,1 @@
-web: gunicorn sofiane_ecommerce.wsgi --log-file -
+web: gunicorn sofiane_ecommerce.wsgi:application --log-file - --log-level debug

@@ -14,9 +14,9 @@
 <section class="section-intro padding-y-sm">
 <div class="container">
 
-<div class="intro-banner-wrap">
+{% comment %} <div class="intro-banner-wrap">
 	<img src={% static 'images/banners/cover.jpg' %} class="img-fluid rounded">
-</div>
+</div> {% endcomment %}
 
 </div> <!-- container //  -->
 </section>
@@ -38,7 +38,11 @@
 		<div class="card card-product-grid">
 			<a href={{product.get_product_url}} class="img-wrap"> <img src={{product.images.url}}> </a>
 			<figcaption class="info-wrap">
-				<a href={{product.get_product_url}} class="title">{{product.product_name}}</a>
+				<a href={{product.get_product_url}} class="title">
+					<h5>
+					{{product.product_name}}
+					</h5>
+				</a>
 				<div class="price mt-1">{{product.price}}$</div> <!-- price-wrap.// -->
 			</figcaption>
 		</div>

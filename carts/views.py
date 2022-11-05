@@ -233,8 +233,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     try:
         tax = 0
         grand_total = 0
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItem.objects.all().filter(cart=cart, is_active=True)
+        if request.user.is_anonymous :
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.all().filter(cart=cart, is_active=True)
+        else:
+             cart_items = CartItem.objects.all().filter(user_id=request.user.id, is_active=True)
         total = 0
         for item in cart_items:
             total += (item.quantity * item.product.price)
@@ -244,6 +247,8 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         grand_total = total + tax
     except ObjectDoesNotExist:
         pass
+
+    print(cart_items)
 
     context = {
         'cart_items': cart_items,
