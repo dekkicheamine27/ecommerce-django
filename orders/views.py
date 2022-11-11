@@ -17,6 +17,128 @@ from django.template.loader import render_to_string
 from carts.views import _cart_id
 
 # Create your views here.
+def paymentAfterReceiving(request, order_number):
+    order = Order.objects.get( is_ordered=False, order_number=order_number)
+    order.is_ordered = True
+    order.save()
+
+    if not request.user.is_anonymous :
+        cart_items = CartItem.objects.filter(user=request.user)
+        for item in cart_items:
+            orderProduct = OrderProduct()
+            
+            orderProduct.order_id = order.id
+            orderProduct.user_id = request.user.id
+            orderProduct.product_id = item.product_id
+            orderProduct.product_price = item.product.price
+            orderProduct.quantity = item.quantity
+            orderProduct.is_ordered = True
+            
+            
+            
+            orderProduct.save()
+
+            cart_item = CartItem.objects.get(id=item.id)
+            product_variation = cart_item.variation.all()
+            orderProduct = OrderProduct.objects.get(id=orderProduct.id)
+            orderProduct.variation.set(product_variation)
+
+            orderProduct.save()
+
+            #reduce quantity
+
+            product = Product.objects.get(id=item.product.id)
+            product.stock  -= item.quantity  
+            product.save()
+        
+
+        #clear cart 
+
+        CartItem.objects.filter(user=request.user).delete()
+
+        #send emai to costumer
+        mail_subject = 'Thank you for your order!'
+        message = render_to_string('orders/order_recived_email.html', {
+            'user': request.user,
+            'order': order
+        })
+        """ to_email = request.user.email
+        send_email = EmailMessage(mail_subject, message, to=[to_email])
+        send_email.send() """
+
+        #send order number and trans id back senData 
+        order_products = OrderProduct.objects.filter(order__id = order.id)
+
+        sub_total=0
+
+        for i in order_products:
+            sub_total += i.product_price
+
+        context = {
+            'order_number': order.order_number,
+            'order_products': order_products,
+            'order': order,
+            'sub_total': sub_total
+
+            
+        }
+        return render(request, 'orders/order_complete_without_paying.html', context)
+    else:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart)
+        for item in cart_items:
+            orderProduct = OrderProduct()
+            
+            orderProduct.order_id = order.id
+            orderProduct.product_id = item.product_id
+            orderProduct.product_price = item.product.price
+            orderProduct.quantity = item.quantity
+            orderProduct.is_ordered = True
+            
+            
+            
+            orderProduct.save()
+
+            cart_item = CartItem.objects.get(id=item.id)
+            product_variation = cart_item.variation.all()
+            orderProduct = OrderProduct.objects.get(id=orderProduct.id)
+            orderProduct.variation.set(product_variation)
+
+            orderProduct.save()
+
+            #reduce quantity
+
+            product = Product.objects.get(id=item.product.id)
+            product.stock  -= item.quantity  
+            product.save()
+        
+
+        #clear cart 
+        
+        CartItem.objects.filter(cart=cart).delete()
+
+        order_products = OrderProduct.objects.filter(order__id = order.id)
+
+        sub_total=0
+
+        for i in order_products:
+            sub_total += i.product_price
+
+        context = {
+            'order_number': order.order_number,
+            'order_products': order_products,
+            'order': order,
+            'sub_total': sub_total
+
+            
+        }
+        return render(request, 'orders/order_complete_without_paying.html', context)
+
+
+
+    
+    
+
 
 def payments(request):
     body = json.loads(request.body)
@@ -237,12 +359,7 @@ def order_complete(request):
 
     try:
         order = Order.objects.get(order_number=order_number, is_ordered=True)
-        print(order.id)
-        
         order_products = OrderProduct.objects.filter(order__id = order.id)
-        
-        print(order_products)
-
         payment = Payment.objects.get(payment_id = transId)
 
         sub_total=0

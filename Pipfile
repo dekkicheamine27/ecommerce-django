@@ -12,6 +12,7 @@ python-decouple = "*"
 gunicorn = "*"
 whitenoise = "*"
 dj-database-url = "*"
+decouple = "*"
 
 [dev-packages]
 

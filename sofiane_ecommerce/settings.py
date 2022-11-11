@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['192.168.1.99','127.0.0.1', 'dekkichos1.herokuapp.com' ]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -163,8 +163,14 @@ MESSAGE_TAGS = {
 }
 
 
-EMAIL_HOST = config('EMAIL_HOST')
+""" EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default = True, cast=bool)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default = True, cast=bool) """
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'amineexp27@gmail.com'
+EMAIL_HOST_PASSWORD = 'hovzilobhdujcojr'
+EMAIL_USE_TLS = True

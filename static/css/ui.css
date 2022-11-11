@@ -1357,8 +1357,8 @@ a[class*=card]:hover .title {
   display: block;
 }
 .gallery-wrap .img-big-wrap img {
-  height: 450px;
-  width: auto;
+  height: 350px;
+  width: 350px;
   display: inline-block;
 }
 .gallery-wrap .thumbs-wrap {

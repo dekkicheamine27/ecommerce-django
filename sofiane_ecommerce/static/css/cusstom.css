@@ -14,3 +14,43 @@ ul.thumb li img{
     height: 80px;
     border: 1px solid gray;
 }
+
+.gallery-wrapp .img-big-wrap {
+    margin-bottom: 10px;
+    border-radius: 0.37rem;
+    overflow: hidden;
+    background-color: #00b517;
+  }
+  .gallery-wrapp .img-big-wrap a {
+    text-align: center;
+    display: block;
+  }
+  .gallery-wrapp .img-big-wrap img {
+    height: 450px;
+    width: auto;
+    display: inline-block;
+  }
+  .gallery-wrapp .thumbs-wrap {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .gallery-wrapp .thumbs-wrap .item-thumb {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 3px;
+    display: inline-block;
+    overflow: hidden;
+  }
+  .gallery-wrapp .thumbs-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-radius: 4px;
+  }
+  .gallery-wrapp .thumbs-wrap img:hover {
+    -webkit-filter: brightness(1.1);
+            filter: brightness(1.1);
+  }

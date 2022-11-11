@@ -103,6 +103,9 @@
                 <div id="paypal-button-container">
                     {% comment %} payPal button {% endcomment %}
                 </div>
+                <div >
+                    <a href={% url 'paymentAfterReceiving' order.order_number%} class="btn btn-primary btn-block"> Payment after receiving </a>
+                </div>
 
             </div> <!-- card-body.// -->
             </div> <!-- card.// -->
