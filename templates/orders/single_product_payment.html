@@ -100,7 +100,7 @@
                 
                 
                 <div >
-                    <a href={% url 'paymentAfterReceiving' order.order_number%} class="btn btn-primary btn-block"> Payment after receiving </a>
+                    <a href={% url 'paymentsingleProduct' order.order_number product.id %} class="btn btn-primary btn-block"> Payment after receiving </a>
                 </div>
 
             </div> <!-- card-body.// -->

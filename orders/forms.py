@@ -7,4 +7,4 @@ from .models import Order
 class OredrForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'phone', 'email', 'wilaya', 'address', 'order_note' ]
+        fields = ['full_name', 'phone', 'wilaya', 'address', 'order_note' ]

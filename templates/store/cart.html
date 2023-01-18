@@ -38,8 +38,9 @@
     <tr>
         <td>
             <figure class="itemside align-items-center">
-                <div class="aside"><img src={{item.product.images.url}} class="img-sm"></div>
+                
                 <figcaption class="info">
+                    <div class="aside"><img src={{item.product.images.url}} class="img-sm"></div>
                     <a href={{item.product.get_product_url}} class="title text-dark">{{item.product.product_name}}</a>
                     <p class="text-muted small">
                     {% if item.variation.all  %}
@@ -126,3 +127,6 @@
 
     {% endblock content %}
     <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+    

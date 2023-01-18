@@ -20,31 +20,19 @@
         {% csrf_token %}
          <div class="form-row">
            <div class="col form-group">
-             <label for="">First Name</label>
-             <input type="text" name="first_name" class="form-control" required>
+             <label for="">Name</label>
+             <input type="text" name="full_name" class="form-control" required>
            </div>
 
            <div class="col form-group">
-             <label for="">Last Name</label>
-             <input type="text" name="last_name" class="form-control" required>
-           </div>
+            <label for="">Phone Number</label>
+            <input type="text" name="phone" class="form-control" required>
+          </div>
 
 
 
          </div>
 
-         <div class="form-row">
-           <div class="col form-group">
-             <label for="">Email</label>
-             <input type="email" name="email" class="form-control" required>
-           </div>
-
-           <div class="col form-group">
-             <label for="">Phone Number</label>
-             <input type="text" name="phone" class="form-control" required>
-           </div>
-
-         </div>
 
          <div class="form-row">
            <div class="col form-group">
@@ -83,7 +71,7 @@
               <thead class="text-muted">
               <tr class="small text-uppercase">
                 <th scope="col">Product</th>
-                <th scope="col" width="120">Quantity</th>
+                <th scope="col" >Image</th>
                 <th scope="col" width="120">Price</th>
 
               </tr>
@@ -93,7 +81,7 @@
               <tr>
                   <td>
                       <figure class="itemside align-items-center">
-                          <div class="aside"><img src={{item.product.images.url}} class="img-sm"></div>
+                         
                           <figcaption class="info">
                               <a href={{item.product.get_product_url}} class="title text-dark">{{item.product.product_name}}</a>
                               <p class="text-muted small">
@@ -103,12 +91,14 @@
                               <br>
                                   {% endfor %}
                                   {% endif %}
+                                  Quantity: {{item.quantity}}
                               </p>
+                              
                           </figcaption>
                       </figure>
                   </td>
                   <td>
-                      <label for="">{{item.quantity}}</label>
+                    <div class="aside"><img src={{item.product.images.url}} class="img-sm"></div>
                   </td>
                   <td>
                       <div class="price-wrap">

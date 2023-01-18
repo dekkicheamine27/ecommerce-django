@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
-from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = "django-insecure-if=6o)w8iqkh@8wi+61q@74%5l)1wr^$sxht#z-e4v8*vrfiry"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -89,10 +88,10 @@ WSGI_APPLICATION = 'sofiane_ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DATABSE_NAME'),
-        'HOST': config('DATABSE_HOST'),
-        'USER': config('DATABSE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
+        'NAME': "sofiane",
+        'HOST': "localhost",
+        'USER': "root",
+        'PASSWORD': "amine2793",
         'OPTIONS': {
          "init_command": "SET foreign_key_checks = 0;",
     },
